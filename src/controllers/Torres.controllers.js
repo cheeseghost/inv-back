@@ -1,15 +1,21 @@
 import TorreModel from "../models/Torres";
 
 export const createTorre = async (req, res) => {
-    const { eti_tor, per_tor, mar_tor, proc_tor, ram_tor, so_tor, ddtip_tor, ddcant_tor, dd_tor } = req.body;
-    const tor = await TorreModel.findOne({ where: { eti_tor: eti_tor } });
-    if (!tor) {
-        const newTor = new TorreModel({ eti_tor, per_tor, mar_tor, proc_tor, ram_tor, so_tor, ddtip_tor, ddcant_tor, dd_tor });
-        const torSaved = await newTor.save()
-        res.status(201).json(torSaved)
+    try{
+        const { eti_tor, per_tor, mar_tor, proc_tor, ram_tor, so_tor, ddtip_tor, ddcant_tor, dd_tor } = req.body;
+        const tor = await TorreModel.findOne({ where: { eti_tor: eti_tor } });
+        
+        if (!tor) {
+            const newTor = new TorreModel({ eti_tor, per_tor, mar_tor, proc_tor, ram_tor, so_tor, ddtip_tor, ddcant_tor, dd_tor });
+            const torSaved = await newTor.save()
+            res.status(201).json(torSaved)
+    
+        } else {
+            res.status(400).json("Ya hay otra torre con esa etiqueta!")
+        }
+    }catch(error){
+        console.log(error)
 
-    } else {
-        res.status(400).json("Ya hay otra torre con esa etiqueta!")
     }
 
 }
@@ -17,7 +23,7 @@ export const createTorre = async (req, res) => {
 export const getTorre = async (req, res) => {
     try {
         const tor = await TorreModel.findAll()
-        res.json(tor)
+        res.send({torre:tor})
     } catch (error) {
         res.json({ message: error.message })
     }

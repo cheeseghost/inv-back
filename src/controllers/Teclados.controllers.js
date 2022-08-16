@@ -1,21 +1,25 @@
 import TecladoModel from "../models/Teclados";
 
 export const createTeclado = async (req, res) => {
-    const { eti_tec, mar_tec, per_tec } = req.body;
-    const tec = await TecladoModel.findOne({ where: { eti_tec: eti_tec } });
-    if(!tec){
-        const newTec = new TecladoModel({ eti_tec, mar_tec, per_tec });
-        const tecSaved = await newTec.save()
-        res.status(201).json(tecSaved)
-    } else {
-        res.status(400).json("Ya hay otra torre con esa etiqueta!")
+    try{
+        const { eti_tec, mar_tec, per_tec } = req.body;
+        const tec = await TecladoModel.findOne({ where: { eti_tec: eti_tec } });
+        if (!tec) {
+            const newTec = new TecladoModel({ eti_tec, mar_tec, per_tec });
+            const tecSaved = await newTec.save()
+            res.status(201).json(tecSaved)
+        } else {
+            res.status(400).json("Ya hay otra torre con esa etiqueta!")
+        }
+    }catch(error){
+        console.log(error)
     }
 }
 
 export const getTeclado = async (req, res) => {
     try {
         const tec = await TecladoModel.findAll()
-        res.json(tec)
+        res.send({teclado:tec})
     } catch (error) {
         res.json({ message: error.message })
     }

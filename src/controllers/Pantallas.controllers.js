@@ -1,21 +1,25 @@
 import PantallaModel from "../models/Pantallas";
 
 export const createPantalla = async (req, res) => {
-    const { eti_pan, mar_pan, per_pan } = req.body;
-    const pan = await PantallaModel.findOne({ where: { eti_pan: eti_pan } });
-    if (!pan) {
-        const newPant = new PantallaModel({ eti_pan, mar_pan, per_pan });
-        const pantSaved = await newPant.save()
-        res.status(201).json(pantSaved)
-    } else {
-        res.status(400).json("Ya hay otra torre con esa etiqueta!")
+    try {
+        const { eti_pan, mar_pan, per_pan } = req.body;
+        const pan = await PantallaModel.findOne({ where: { eti_pan: eti_pan } });
+        if (!pan) {
+            const newPant = new PantallaModel({ eti_pan, mar_pan, per_pan });
+            const pantSaved = await newPant.save()
+            res.status(201).json(pantSaved)
+        } else {
+            res.status(400).json("Ya hay otra torre con esa etiqueta!")
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
 export const getPantalla = async (req, res) => {
     try {
         const pant = await PantallaModel.findAll()
-        res.json(pant)
+        res.send({pantalla:pant})
     } catch (error) {
         res.json({ message: error.message })
     }

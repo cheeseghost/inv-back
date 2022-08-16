@@ -1,14 +1,18 @@
 import MouseModel from "../models/Mouses"
 
 export const createMouse = async (req, res) => {
-    const { eti_mou, mar_mou, per_mou } = req.body;
-    const mou = await MouseModel.findOne({ where: { eti_mou: eti_mou } });
-    if (!mou) {
-        const newMouse = new MouseModel({ eti_mou, mar_mou, per_mou });
-        const mouseSaved = await newMouse.save()
-        res.status(201).json(mouseSaved)
-    } else {
-        res.status(400).json("Ya hay otra torre con esa etiqueta!")
+    try {
+        const { eti_mou, mar_mou, per_mou } = req.body;
+        const mou = await MouseModel.findOne({ where: { eti_mou: eti_mou } });
+        if (!mou) {
+            const newMouse = new MouseModel({ eti_mou, mar_mou, per_mou });
+            const mouseSaved = await newMouse.save()
+            res.status(201).json(mouseSaved)
+        } else {
+            res.status(400).json("Ya hay otra torre con esa etiqueta!")
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 

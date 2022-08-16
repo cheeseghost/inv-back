@@ -8,6 +8,8 @@ import pantallaRoutes from "./routes/pantallas.routes"
 import tecladoRoutes from "./routes/teclados.routes"
 import torreRoutes from "./routes/torres.routes"
 import userRoutes from "./routes/users.routes"
+import diademaRoutes from "./routes/diademas.routes"
+import DS from "./database/sesionbase"
 
 
 const app = express()
@@ -15,24 +17,29 @@ const cors = require("cors");
 const bodyParse = require('body-parser');
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const mysqlS=require("express-mysql-session");
+ const sessionS= new mysqlS(DS)
+
 
 app.use(cors({
-    origin: ["http://localhost:3000"],
-    methods: ["GET", "POST","PUT","DELETE"],
+
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 
-app.use(cookieParser())
+app.use(cookieParser(process.env.SEC))
 
 app.use(bodyParse.urlencoded({ extended: true }))
 
 app.use(session({
-    key:"userId",
-    secret:process.env.SECRET,
-    resave:false,
-    saveUninitialized:false,
-    cookie:{
-        expires:60*60*9,
+    key: "userId",
+    store:sessionS,
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 60*60*4*1000,
     },
 }));
 
@@ -59,6 +66,8 @@ app.set("port", port)
 app.use("/mouses", mouseRoutes)
 
 app.use("/users", userRoutes)
+
+app.use("/diademas",diademaRoutes)
 
 app.use("/pantallas", pantallaRoutes)
 
