@@ -6,9 +6,13 @@ import * as mousesControllers from "../controllers/Mouses.controllers"
 
 router.post("/", [CheckAuth, CheckRol], mousesControllers.createMouse)
 
-router.get("/", mousesControllers.getMouse)
+router.get("/", [CheckAuth, CheckRol], mousesControllers.getMouse)
 
-router.get("/:id_mou", mousesControllers.getMouseById)
+router.get("/all", [CheckAuth, CheckRol],mousesControllers.allMouse)
+
+router.post("/filt",[CheckAuth,CheckRol],mousesControllers.filtMouses)
+
+router.get("/:id_mou", [CheckAuth, CheckRol], mousesControllers.getMouseById)
 
 router.put("/:id_mou", [CheckAuth, CheckRol], mousesControllers.updateMouseById)
 

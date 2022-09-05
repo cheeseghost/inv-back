@@ -6,9 +6,13 @@ import * as tecladoControllers from "../controllers/Teclados.controllers"
 
 router.post("/",[CheckAuth,CheckRol],tecladoControllers.createTeclado)
 
-router.get("/",tecladoControllers.getTeclado)
+router.get("/",[CheckAuth,CheckRol],tecladoControllers.getTeclado)
 
-router.get("/:id_tec",tecladoControllers.getTecladoById)
+router.get("/all",[CheckAuth,CheckRol],tecladoControllers.allTeclado)
+
+router.post("/filt",[CheckAuth,CheckRol],tecladoControllers.filtTeclados)
+
+router.get("/:id_tec",[CheckAuth,CheckRol],tecladoControllers.getTecladoById)
 
 router.put("/:id_tec",[CheckAuth,CheckRol],tecladoControllers.updateTecladoById)
 

@@ -1,4 +1,5 @@
 import TorreModel from "../models/Torres";
+import TienesModel from "../models/Tienes";
 
 export const createTorre = async (req, res) => {
     try{
@@ -22,7 +23,49 @@ export const createTorre = async (req, res) => {
 
 export const getTorre = async (req, res) => {
     try {
-        const tor = await TorreModel.findAll()
+        
+        const tor = await TienesModel.findAll({attributes: [],
+            include:[{model:TorreModel,required: false,right: true}],required:false,left:true,where:{id_tor:null}
+        })
+        res.send({torre:tor})
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+}
+export const filtTorre= async(req,res)=>{
+    try {
+        console.log(req.body.per_tor)
+        if(req.body.per_tor && req.body.ddtip_tor){
+            const tor= await TorreModel.findAll({
+            where:{per_tor:req.body.per_tor,ddtip_tor:req.body.ddtip_tor}
+        })
+        res.send({torre:tor})
+
+    }else if(req.body.per_tor){
+        const tor= await TorreModel.findAll({
+            where:{per_tor:req.body.per_tor}
+            
+        })
+        res.send({torre:tor})
+
+    }else if(req.body.ddtip_tor){
+        const  tor= await TorreModel.findAll({
+            where:{ddtip_tor:req.body.ddtip_tor}
+        })
+        res.send({torre:tor})
+
+    }
+
+        
+    } catch (error) {   
+        res.json({ message: error.message })
+    }
+}
+export const allTorre= async(req,res)=>{
+    try {
+        const tor = await TienesModel.findAll({attributes: [],
+            include:[{model:TorreModel,right:true}],
+        })
         res.send({torre:tor})
     } catch (error) {
         res.json({ message: error.message })

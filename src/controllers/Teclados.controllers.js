@@ -1,4 +1,5 @@
 import TecladoModel from "../models/Teclados";
+import TienesModel from "../models/Tienes";
 
 export const createTeclado = async (req, res) => {
     try{
@@ -18,9 +19,38 @@ export const createTeclado = async (req, res) => {
 
 export const getTeclado = async (req, res) => {
     try {
-        const tec = await TecladoModel.findAll()
+        const tec = await TienesModel.findAll({attributes: [],
+            include:[{model:TecladoModel,required: false,right: true}],required:false,left:true,where:{id_tec:null}
+        })
         res.send({teclado:tec})
     } catch (error) {
+        res.json({ message: error.message })
+    }
+}
+
+export const allTeclado=async(req,res)=>{
+    try {
+        const tec = await TienesModel.findAll({attributes: [],
+            include:[{model:TecladoModel,right:true}],
+        })
+        res.send({teclado:tec})
+    } catch (error) {
+        res.json({ message: error.message })  
+    }
+}
+
+export const filtTeclados= async(req,res)=>{
+    try {
+        
+        if(req.body.per_tec){
+            const tec= await TecladoModel.findAll({
+            where:{per_tec:req.body.per_tec}
+        })
+        res.send({teclado:tec})}
+
+
+        
+    } catch (error) {   
         res.json({ message: error.message })
     }
 }

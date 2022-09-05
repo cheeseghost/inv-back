@@ -1,4 +1,5 @@
 import MouseModel from "../models/Mouses"
+import TienesModel from "../models/Tienes";
 
 export const createMouse = async (req, res) => {
     try {
@@ -18,8 +19,37 @@ export const createMouse = async (req, res) => {
 
 export const getMouse = async (req, res) => {
     try {
-        const mouse = await MouseModel.findAll()
-        res.json(mouse)
+        const mou = await TienesModel.findAll({attributes: [],
+            include:[{model:MouseModel,required: false,right: true}],required:false,left:true,where:{id_mou:null}
+        })
+        res.send({ mouse: mou })
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+}
+
+export const filtMouses= async(req,res)=>{
+    try {
+        
+        if(req.body.per_mou){
+            const mou= await MouseModel.findAll({
+            where:{per_mou:req.body.per_mou}
+        })
+        res.send({mouse:mou})}
+
+
+        
+    } catch (error) {   
+        res.json({ message: error.message })
+    }
+}
+
+export const allMouse= async(req,res)=>{
+    try {
+        const mou = await TienesModel.findAll({attributes: [],
+            include:[{model:MouseModel,right:true}],
+        })
+        res.send({mouse:mou})
     } catch (error) {
         res.json({ message: error.message })
     }

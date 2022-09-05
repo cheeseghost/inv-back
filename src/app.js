@@ -9,6 +9,7 @@ import tecladoRoutes from "./routes/teclados.routes"
 import torreRoutes from "./routes/torres.routes"
 import userRoutes from "./routes/users.routes"
 import diademaRoutes from "./routes/diademas.routes"
+import tienesRouter from "./routes/tienes.routes"
 import DS from "./database/sesionbase"
 
 
@@ -68,6 +69,8 @@ app.use("/mouses", mouseRoutes)
 app.use("/users", userRoutes)
 
 app.use("/diademas",diademaRoutes)
+
+app.use("/tien",tienesRouter)
 
 app.use("/pantallas", pantallaRoutes)
 

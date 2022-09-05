@@ -1,4 +1,5 @@
 import PantallaModel from "../models/Pantallas";
+import TienesModel from "../models/Tienes";
 
 export const createPantalla = async (req, res) => {
     try {
@@ -18,9 +19,37 @@ export const createPantalla = async (req, res) => {
 
 export const getPantalla = async (req, res) => {
     try {
-        const pant = await PantallaModel.findAll()
-        res.send({pantalla:pant})
+        const pan = await TienesModel.findAll({ attributes:[],
+            include:[{model:PantallaModel,right:true,required:false}],required:false,left:true,where:{id_pan:null}
+        })
+        res.send({pantalla:pan})
     } catch (error) {
+        res.json({ message: error.message })
+    }
+}
+export const allPantallas= async(req,res)=>{
+    try {
+        const pan = await TienesModel.findAll({attributes: [],
+            include:[{model:PantallaModel,right:true}],
+        })
+        res.send({pantalla:pan})
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+}
+
+export const filtPantallas= async(req,res)=>{
+    try {
+        
+        if(req.body.per_pan){
+            const pan= await PantallaModel.findAll({
+            where:{per_pan:req.body.per_pan}
+        })
+        res.send({pantalla:pan})}
+
+
+        
+    } catch (error) {   
         res.json({ message: error.message })
     }
 }

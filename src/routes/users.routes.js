@@ -2,6 +2,7 @@ import { Router } from "express";
 const router=Router()
 
 import * as userControllers from "../controllers/Users.controllers"
+import * as tieneControllers from "../controllers/Tienes.controllers"
 import {CheckAuth,CheckRol,CerrUser} from "../middlewares/auth"
 
 router.post("/register",[CheckAuth,CheckRol],userControllers.createUser)
@@ -12,6 +13,8 @@ router.get("/login",[CheckAuth,CheckRol],userControllers.sesionUser)
 
 router.get("/home",[CheckAuth,CheckRol],userControllers.getUser)
 
+router.post("/filt",[CheckAuth,CheckRol],userControllers.filtUser)
+
 router.get("/get/:id_per",[CheckAuth,CheckRol],userControllers.getUserById)
 
 router.get("/exit",userControllers.exUser)
@@ -19,6 +22,7 @@ router.get("/exit",userControllers.exUser)
 router.put("/update/:id_per",[CheckAuth,CheckRol],userControllers.updateUser)
 
 router.delete("/delete/:id_per",[CheckAuth,CheckRol],userControllers.deleteUser)
+
 
 
 

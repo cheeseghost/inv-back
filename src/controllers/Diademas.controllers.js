@@ -1,11 +1,12 @@
 import DiademaModel from "../models/Diademas";
+import TienesModel from "../models/Tienes";
 
 export const createDiadema = async (req, res) => {
     try {
-        const { eti_dia, mar_dia} = req.body;
+        const { eti_dia, marc_dia} = req.body;
         const dia = await DiademaModel.findOne({ where: { eti_dia: eti_dia } });
         if (!dia) {
-            const newDia = new DiademaModel({ eti_dia, mar_dia});
+            const newDia = new DiademaModel({ eti_dia, marc_dia});
             const diaSaved = await newDia.save()
             res.status(201).json(diaSaved)
         } else {
@@ -18,8 +19,21 @@ export const createDiadema = async (req, res) => {
 
 export const getDiadema = async (req, res) => {
     try {
-        const dia = await DiademaModel.findAll()
+        const dia = await TienesModel.findAll({attributes: [],
+            include:[{model:DiademaModel,required: false,right: true}],required:false,left:true,where:{id_dia:null}
+        })
         res.send({ diadema: dia })
+    } catch (error) {
+        res.json({ message: error.message })
+    }
+}
+
+export const allDiadema= async(req,res)=>{
+    try {
+        const dia = await TienesModel.findAll({attributes: [],
+            include:[{model:DiademaModel,right:true}],
+        })
+        res.send({diadema:dia})
     } catch (error) {
         res.json({ message: error.message })
     }

@@ -6,9 +6,11 @@ import * as diademasControllers from "../controllers/Diademas.controllers"
 
 router.post("/",[CheckAuth,CheckRol],diademasControllers.createDiadema)
 
-router.get("/",diademasControllers.getDiadema)
+router.get("/",[CheckAuth,CheckRol],diademasControllers.getDiadema)
 
-router.get("/:id_dia",diademasControllers.getDiademaById)
+router.get("/all",[CheckAuth,CheckRol],diademasControllers.allDiadema)
+
+router.get("/:id_dia",[CheckAuth,CheckRol],diademasControllers.getDiademaById)
 
 router.put("/:id_dia",[CheckAuth,CheckRol],diademasControllers.updateDiademaById)
 
